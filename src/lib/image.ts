@@ -54,7 +54,7 @@ export async function fileToWorkingImage(
   }
 }
 
-function rotatedBoxSize(width: number, height: number, rotationDeg: number) {
+export function rotatedBoxSize(width: number, height: number, rotationDeg: number) {
   const rotRad = (rotationDeg * Math.PI) / 180
   return {
     width: Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),

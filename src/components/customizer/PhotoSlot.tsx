@@ -6,6 +6,7 @@ import type { Size } from '@/data/catalog'
 import type { ProductType } from '@/components/product/ProductFrame'
 import ProductFrame from '@/components/product/ProductFrame'
 import { fileToWorkingImage, isLowResolution } from '@/lib/image'
+import CropReference from './CropReference'
 import { EMPTY_SLOT, type SlotState } from './types'
 
 interface PhotoSlotProps {
@@ -103,6 +104,21 @@ export default function PhotoSlot({
             </label>
             {overlay}
           </ProductFrame>
+        </div>
+      )}
+
+      {value.workingImageUrl && (
+        <div className="flex flex-col items-center gap-1">
+          <CropReference
+            imageUrl={value.workingImageUrl}
+            naturalWidth={value.naturalWidth}
+            naturalHeight={value.naturalHeight}
+            rotation={value.rotation}
+            croppedAreaPixels={value.croppedAreaPixels}
+          />
+          <p className="max-w-[200px] text-center text-[11px] leading-snug text-ink/50">
+            Full photo — the highlighted circle is what will print.
+          </p>
         </div>
       )}
 
