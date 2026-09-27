@@ -6,7 +6,7 @@ import ReviewsSection from '@/components/trust/ReviewsSection'
 import FaqAccordion from '@/components/trust/FaqAccordion'
 
 const PROMISES = [
-  { icon: MapPin, label: 'Family-made in Middle Tennessee' },
+  { icon: MapPin, label: 'Family-made in Pittsburgh, PA' },
   { icon: Truck, label: 'Ships in 3 to 5 business days' },
   { icon: ShieldCheck, label: 'Photo quality guarantee' },
 ]
@@ -39,7 +39,7 @@ const HOW_IT_WORKS = [
 export default function Home() {
   useSeo(
     'Custom Photo Magnets, Keychains & Pins',
-    'Upload a photo, see it on your product before you buy, and get it in 3 to 5 days. Family-made in Middle Tennessee.',
+    'Upload a photo, see it on your product before you buy, and get it in 3 to 5 days. Family-made in Pittsburgh, PA.',
   )
 
   return (
@@ -53,7 +53,7 @@ export default function Home() {
             Turn your favorite photo into a keepsake they carry every day
           </h1>
           <p className="mt-5 text-lg text-ink/80">
-            Custom photo magnets, keychains, and pins, made by hand in Middle Tennessee. Upload
+            Custom photo magnets, keychains, and pins, made by hand in Pittsburgh, PA. Upload
             your photo and see it on the real product before you ever pay.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">

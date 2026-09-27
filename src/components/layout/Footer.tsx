@@ -24,7 +24,7 @@ export default function Footer() {
             <span className="font-display text-lg">The Legacy Collective</span>
           </Link>
           <p className="max-w-xs text-sm text-cream/80">
-            Family-made in Middle Tennessee. Hand-crafted keepsakes made from the photos you already love.
+            Family-made in Pittsburgh, PA. Hand-crafted keepsakes made from the photos you already love.
           </p>
         </div>
 

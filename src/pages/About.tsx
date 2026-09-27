@@ -25,7 +25,7 @@ export default function About() {
         <p className="mt-10 whitespace-pre-line text-lg leading-relaxed text-ink/80">{OUR_STORY}</p>
 
         <p className="mt-10 text-center font-display text-xl text-forest">
-          Family-made in Middle Tennessee.
+          Family-made in Pittsburgh, PA.
         </p>
       </div>
     </div>

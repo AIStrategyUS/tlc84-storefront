@@ -22,6 +22,6 @@ export const FAQS: FaqItem[] = [
   {
     question: 'Can you come to our event?',
     answer:
-      'We bring an onsite magnet-making station to weddings, showers, birthdays, and corporate events across Middle Tennessee. Visit our Events page to see packages and check availability.',
+      'We bring an onsite magnet-making station to weddings, showers, birthdays, and corporate events across the Pittsburgh, PA area. Visit our Events page to see packages and check availability.',
   },
 ]

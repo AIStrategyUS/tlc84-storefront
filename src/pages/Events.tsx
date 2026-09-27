@@ -25,7 +25,7 @@ const STEPS = [
 export default function Events() {
   useSeo(
     'Onsite Magnet Events',
-    'Book onsite magnet-making for your wedding, shower, birthday, or corporate event in Middle Tennessee.',
+    'Book onsite magnet-making for your wedding, shower, birthday, or corporate event in Pittsburgh, PA.',
   )
 
   return (
@@ -64,7 +64,7 @@ export default function Events() {
             ))}
           </div>
           <p className="mt-6 text-center text-sm text-ink/60">
-            Service area: Middle Tennessee. Contact us for other areas.
+            Service area: Pittsburgh, PA. Contact us for other areas.
           </p>
         </div>
       </section>

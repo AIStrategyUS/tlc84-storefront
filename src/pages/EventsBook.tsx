@@ -134,7 +134,7 @@ export default function EventsBook() {
   return (
     <div className="container-page max-w-2xl py-10 sm:py-14">
       <h1 className="mb-2 font-display text-3xl text-forest sm:text-4xl">Book your event</h1>
-      <p className="mb-8 text-ink/70">Middle Tennessee only. Contact us for other areas.</p>
+      <p className="mb-8 text-ink/70">Pittsburgh, PA only. Contact us for other areas.</p>
 
       <ol className="mb-10 flex items-center gap-2 text-xs font-medium text-ink/50 sm:text-sm">
         {STEP_LABELS.map((s, i) => {
