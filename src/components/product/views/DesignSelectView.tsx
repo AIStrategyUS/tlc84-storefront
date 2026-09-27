@@ -7,7 +7,7 @@ import SizeSelector from '../SizeSelector'
 import PackTiles from '../PackTiles'
 import OptionSelect from '../OptionSelect'
 import QuantityStepper from '../QuantityStepper'
-import ProductPlaceholder from '../ProductPlaceholder'
+import ProductVisual from '../ProductVisual'
 import { Button } from '@/components/ui/Button'
 import { formatPrice } from '@/lib/pricing'
 import { parseQuantityFromLabel, restoreOptionValues } from '@/lib/editRestore'
@@ -74,7 +74,9 @@ export default function DesignSelectView({ product, editItem }: { product: Desig
     .filter(Boolean)
   const placeholderLabel = selectedLabels.length > 0 ? selectedLabels.join(', ') : product.placeholderLabel
 
-  const visual = <ProductPlaceholder label={placeholderLabel} size={size} basePx={260} />
+  const visual = (
+    <ProductVisual images={product.images} name={product.name} placeholderLabel={placeholderLabel} size={size} basePx={260} />
+  )
 
   const buyBox = (
     <div className="space-y-6">

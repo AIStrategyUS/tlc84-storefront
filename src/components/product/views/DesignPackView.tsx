@@ -6,7 +6,7 @@ import ProductLayout from '../ProductLayout'
 import SizeSelector from '../SizeSelector'
 import PackTiles from '../PackTiles'
 import OptionSelect from '../OptionSelect'
-import ProductPlaceholder from '../ProductPlaceholder'
+import ProductVisual from '../ProductVisual'
 import { Button } from '@/components/ui/Button'
 import { formatPrice, savingsPercent } from '@/lib/pricing'
 import { parseQuantityFromLabel, restoreOptionValues } from '@/lib/editRestore'
@@ -76,8 +76,10 @@ export default function DesignPackView({ product, editItem }: { product: DesignP
   const placeholderLabel = selectedLabels.length > 0 ? selectedLabels.join(' ') : product.placeholderLabel
 
   const visual = (
-    <ProductPlaceholder
-      label={placeholderLabel}
+    <ProductVisual
+      images={product.images}
+      name={product.name}
+      placeholderLabel={placeholderLabel}
       size={size}
       productType={product.magnetPinToggle && magnetOrPin === 'pin' ? 'pin' : 'magnet'}
       basePx={260}

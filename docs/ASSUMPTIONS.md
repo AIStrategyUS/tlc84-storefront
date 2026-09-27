@@ -112,17 +112,28 @@ changes (mostly `src/data/catalog.ts`, `src/lib/shipping.ts`, or
   `docs/source-assets/logo-original.png` for reference. If the client has a
   vector source file (.ai/.eps/.svg) from their original designer, swapping
   it in later is a one-file change.
-- **Product photography**: of the 7 images referenced in the reference file,
-  5 are used as real placeholders (3" and 2.25" Custom Photo Magnets, 3" and
-  2.25" Save the Date Magnets, Logo/QR Magnets). Two were downloaded but not
-  used: the keychains photo actually shows text/quote keychains, not photo
-  keychains (would misrepresent the product), and the baby blanket photo is
-  a Wix marketing graphic with a "Baby Blankets" title and torn-paper border
-  baked into the image itself, which would visually clash with this site's
-  design. Both of those products use the stylized SVG placeholder instead.
-  All originals are kept at `docs/source-assets/` in case the client wants
-  them cropped or reused differently. `docs/PHOTO-SHOT-LIST.md` (Phase 4)
-  lists what the client should shoot to replace every placeholder.
+- **Product photography**: all 7 images referenced in the reference file are
+  now used as real photos (3" and 2.25" Custom Photo Magnets, Custom Photo
+  Keychains, 3" and 2.25" Save the Date Magnets, Logo/QR Magnets, Baby
+  Blanket). Two needed rework, per client direction to stay as close to the
+  original site's photos as possible even where imperfect: the keychains
+  photo shows the client's real leather-strap keychain hardware, even though
+  the charms pictured are a text/quote design rather than a photo charm, so
+  it's used as-is since it's still the client's authentic product format.
+  The baby blanket source was a Wix marketing graphic with a "Baby Blankets"
+  title and a torn-paper border baked into the image; that's cropped down
+  (via `docs/source-assets/baby-blanket.png`, the full uncropped original)
+  to just the photographic basket-of-blankets region, discarding the
+  graphic elements but keeping the real photo. The product page's visual
+  panel (`ProductVisual`) now shows this real photo instead of the
+  stylized-circle placeholder for both products.
+  Nothing in the reference file gives a photo for the other 8 products
+  (Custom Photo Pins, Birth Month Flower, Bible Verse, Sport Fan, Patriotic,
+  Christmas Coloring, Punny Set, ABC 123 Kit) — the live Wix site apparently
+  never had distinct photography for them either, so there is no "original
+  photo" to match for these; they keep the stylized SVG placeholder the
+  brief specifies as the fallback. `docs/PHOTO-SHOT-LIST.md` (Phase 4) will
+  prioritize these 8 for the client's next photo shoot.
 - **Reviews**: placeholder reviews use initials-style names ("Sarah M.") per
   the brief, clearly marked `// TODO: replace with real reviews` in code.
 
