@@ -127,29 +127,29 @@ changes (mostly `src/data/catalog.ts`, `src/lib/shipping.ts`, or
   graphic elements but keeping the real photo. The product page's visual
   panel (`ProductVisual`) now shows this real photo instead of the
   stylized-circle placeholder for both products.
-  Nothing in the reference file gives a photo for the other 8 products
-  (Custom Photo Pins, Birth Month Flower, Bible Verse, Sport Fan, Patriotic,
-  Christmas Coloring, Punny Set, ABC 123 Kit) — the live Wix site apparently
-  never had distinct photography for them either, so there is no "original
-  photo" to match for these.
-- **Digital mockups for the remaining 8 products**: per client direction, a
-  flat SVG-style placeholder wasn't populated enough — every shop card
-  should read as a photo, matching the client's real ones, even where no
-  real photo exists yet. Each of the 8 products above now has a synthetic
-  product photo: glossy circular magnets scattered on the same warm
-  neutral surface as the real photos, each showing that product's actual
-  theme (botanical art for birth month, elegant typography for bible verse,
-  a flag motif for patriotic, sport icons and role labels, etc.), generated
-  from `docs/source-assets/mockup-generator/mockup.html` with headless
-  Chrome. These are clearly **not real photos** — they're placeholders
-  designed to look consistent with the real ones rather than clash with
-  them, and they're still first in line in `docs/PHOTO-SHOT-LIST.md` for
-  the client's next photo shoot. This also means the product detail page
-  for these 8 now shows that static mockup image instead of the old
-  placeholder that dynamically echoed the selected option (e.g. showing
-  "June" once a birth month was picked) — a reasonable trade, since most
-  real e-commerce sites show one representative photo per product rather
-  than swapping it per option unless they have real per-option photography.
+  The `tlc84-site-reference.md` text file didn't include a photo for the
+  other 8 products (Custom Photo Pins, Birth Month Flower, Bible Verse,
+  Sport Fan, Patriotic, Christmas Coloring, Punny Set, ABC 123 Kit), but the
+  live site's actual `/shop` page turned out to have real photos for every
+  one of them once checked directly (the text extraction the reference file
+  was built from simply hadn't captured them). All 8 now use those real
+  photos, sourced the same way as the original 7: downloaded from
+  `static.wixstatic.com`, resized, and compressed. Bible Verse, Sport Fan,
+  Christmas Coloring, Custom Photo Pins, and ABC 123 Kit each got two
+  images (a primary and a hover/secondary), matching the pattern already
+  used for Custom Photo Magnets and Save the Date; Birth Month Flower,
+  Patriotic, and Punny Set had one clear representative photo each. A few
+  candidates were skipped in favor of better ones from the same product
+  (e.g. a birthday-party pin photo with a ribbon rosette in favor of a
+  cleaner, professionally-lit stack of pins), following the same
+  "authentic but not misleading" standard applied to the original 7.
+  This also means the product detail page for these 8 now shows a real
+  photo instead of the placeholder that used to dynamically echo the
+  selected option (e.g. showing "June" once a birth month was picked) — a
+  reasonable trade, since most real e-commerce sites show one representative
+  photo per product rather than swapping it per option unless they have
+  real per-option photography. All full-resolution originals are kept in
+  `docs/source-assets/` for reference.
 - **Reviews**: placeholder reviews use initials-style names ("Sarah M.") per
   the brief, clearly marked `// TODO: replace with real reviews` in code.
 - **About page family photo**: no photo of the family exists anywhere in the
