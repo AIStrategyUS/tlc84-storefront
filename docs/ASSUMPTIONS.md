@@ -131,9 +131,25 @@ changes (mostly `src/data/catalog.ts`, `src/lib/shipping.ts`, or
   (Custom Photo Pins, Birth Month Flower, Bible Verse, Sport Fan, Patriotic,
   Christmas Coloring, Punny Set, ABC 123 Kit) — the live Wix site apparently
   never had distinct photography for them either, so there is no "original
-  photo" to match for these; they keep the stylized SVG placeholder the
-  brief specifies as the fallback. `docs/PHOTO-SHOT-LIST.md` (Phase 4) will
-  prioritize these 8 for the client's next photo shoot.
+  photo" to match for these.
+- **Digital mockups for the remaining 8 products**: per client direction, a
+  flat SVG-style placeholder wasn't populated enough — every shop card
+  should read as a photo, matching the client's real ones, even where no
+  real photo exists yet. Each of the 8 products above now has a synthetic
+  product photo: glossy circular magnets scattered on the same warm
+  neutral surface as the real photos, each showing that product's actual
+  theme (botanical art for birth month, elegant typography for bible verse,
+  a flag motif for patriotic, sport icons and role labels, etc.), generated
+  from `docs/source-assets/mockup-generator/mockup.html` with headless
+  Chrome. These are clearly **not real photos** — they're placeholders
+  designed to look consistent with the real ones rather than clash with
+  them, and they're still first in line in `docs/PHOTO-SHOT-LIST.md` for
+  the client's next photo shoot. This also means the product detail page
+  for these 8 now shows that static mockup image instead of the old
+  placeholder that dynamically echoed the selected option (e.g. showing
+  "June" once a birth month was picked) — a reasonable trade, since most
+  real e-commerce sites show one representative photo per product rather
+  than swapping it per option unless they have real per-option photography.
 - **Reviews**: placeholder reviews use initials-style names ("Sarah M.") per
   the brief, clearly marked `// TODO: replace with real reviews` in code.
 - **About page family photo**: no photo of the family exists anywhere in the

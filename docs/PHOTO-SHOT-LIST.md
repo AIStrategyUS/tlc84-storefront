@@ -2,12 +2,14 @@
 
 The mockup uses the client's real photos where the reference material had
 them (Custom Photo Magnets, Custom Photo Keychains, Save the Date Magnets,
-Logo/QR Magnets, Baby Blanket), and a stylized colored-circle placeholder
-everywhere else. These are the shots that would replace those placeholders
-and round out the site for a real launch. All of them should be clean,
-well-lit product shots on a simple, uncluttered background (a plain surface
-or light backdrop), shot straight-on so the client can drop each one in
-without changing any layout.
+Logo/QR Magnets, Baby Blanket). The other 8 products use a digital mockup
+photo (see `docs/source-assets/mockup-generator/`) designed to look
+consistent with the real ones rather than a flat placeholder circle, but
+it's still a synthetic stand-in, not a real photo. These are the shots that
+would replace those mockups and round out the site for a real launch. All
+of them should be clean, well-lit product shots on a simple, uncluttered
+background (a plain surface or light backdrop), shot straight-on so the
+client can drop each one in without changing any layout.
 
 1. **Custom Photo Pins** — 3 to 4 finished pins, straight-on, at least one
    showing the pin-back clasp so shoppers understand what they're buying.
