@@ -24,6 +24,22 @@ export default {
       borderRadius: {
         xl2: '1.25rem',
       },
+      keyframes: {
+        shine: {
+          '0%': { transform: 'translateX(-120%) skewX(-12deg)' },
+          '60%': { transform: 'translateX(220%) skewX(-12deg)' },
+          '100%': { transform: 'translateX(220%) skewX(-12deg)' },
+        },
+        'pulse-ring': {
+          '0%': { transform: 'scale(0.92)', opacity: '0.55' },
+          '80%': { transform: 'scale(1.18)', opacity: '0' },
+          '100%': { transform: 'scale(1.18)', opacity: '0' },
+        },
+      },
+      animation: {
+        shine: 'shine 3.2s ease-in-out infinite',
+        'pulse-ring': 'pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
     },
   },
   plugins: [],

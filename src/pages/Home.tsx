@@ -66,18 +66,69 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative mx-auto h-72 w-72 sm:h-80 sm:w-80" aria-hidden="true">
-          <div className="absolute -left-4 top-6 h-20 w-20 rounded-full bg-sage shadow-card sm:h-24 sm:w-24" />
-          <div className="absolute -right-2 bottom-8 h-16 w-16 rounded-full bg-mist shadow-card sm:h-20 sm:w-20" />
-          <div className="absolute inset-6 rounded-full bg-white shadow-soft ring-[10px] ring-white sm:inset-8">
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-sage to-mist">
-              <Camera className="h-16 w-16 text-moss sm:h-20 sm:w-20" />
+        <Link
+          to="/shop"
+          aria-label="Shop custom photo magnets — upload your own photo and see it on the product"
+          className="group relative mx-auto block h-72 w-72 transition-transform duration-300 hover:scale-[1.03] focus-visible:scale-[1.03] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-moss/40 focus-visible:ring-offset-4 focus-visible:ring-offset-cream sm:h-80 sm:w-80"
+        >
+          <div
+            aria-hidden="true"
+            className="absolute -left-4 top-6 h-20 w-20 rounded-full bg-sage shadow-card sm:h-24 sm:w-24"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute -right-2 bottom-8 h-16 w-16 rounded-full bg-mist shadow-card sm:h-20 sm:w-20"
+          />
+
+          {/* pulsing rings hint that this magnet is interactive */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-6 rounded-full bg-moss/30 animate-pulse-ring sm:inset-8"
+          />
+          <span
+            aria-hidden="true"
+            style={{ animationDelay: '1.2s' }}
+            className="absolute inset-6 rounded-full bg-moss/30 animate-pulse-ring sm:inset-8"
+          />
+
+          <div className="absolute inset-6 overflow-hidden rounded-full bg-white shadow-soft ring-[10px] ring-white transition-shadow duration-300 group-hover:shadow-[0_20px_45px_-15px_rgba(23,55,26,0.45)] sm:inset-8">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-full border-2 border-dashed border-moss/50 bg-gradient-to-br from-sage to-mist p-4 text-center">
+              <Camera className="h-12 w-12 text-moss sm:h-14 sm:w-14" aria-hidden="true" />
+              <span className="font-display text-sm leading-tight text-forest sm:text-base">
+                Your photo here
+              </span>
             </div>
+
+            {/* gloss highlight, matching the real product-photo frame elsewhere on the site */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 rounded-full"
+              style={{
+                background:
+                  'linear-gradient(135deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0) 45%)',
+              }}
+            />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-black/10" />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-white/0 via-white/70 to-white/0 animate-shine"
+            />
           </div>
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-forest px-4 py-1.5 text-xs font-semibold text-cream shadow-soft">
+
+          <span
+            aria-hidden="true"
+            className="absolute right-3 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-forest text-cream shadow-soft ring-4 ring-cream transition-transform duration-300 group-hover:scale-110 sm:right-5 sm:top-8 sm:h-11 sm:w-11"
+          >
+            <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
+          </span>
+
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-forest px-4 py-1.5 text-xs font-semibold text-cream shadow-soft"
+          >
             from $4.98
           </div>
-        </div>
+        </Link>
       </section>
 
       <section className="border-y border-mist bg-sage/40">
