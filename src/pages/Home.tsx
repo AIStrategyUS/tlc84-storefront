@@ -2,6 +2,8 @@ import { Camera, MapPin, ShieldCheck, Sparkles, Truck, Upload } from 'lucide-rea
 import { Link } from 'react-router-dom'
 import { ButtonLink } from '@/components/ui/Button'
 import { useSeo } from '@/lib/useSeo'
+import ReviewsSection from '@/components/trust/ReviewsSection'
+import FaqAccordion from '@/components/trust/FaqAccordion'
 
 const PROMISES = [
   { icon: MapPin, label: 'Family-made in Middle Tennessee' },
@@ -153,7 +155,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container-page pb-20">
+      <section className="container-page py-16 sm:py-20">
+        <ReviewsSection />
+      </section>
+
+      <div className="border-t border-mist bg-sage/20">
+        <div className="container-page py-16 sm:py-20">
+          <FaqAccordion />
+        </div>
+      </div>
+
+      <section className="container-page pb-20 pt-16 sm:pt-20">
         <div className="rounded-3xl border border-mist bg-white p-8 text-center shadow-card sm:p-12">
           <h2 className="font-display text-3xl text-forest">
             Ready to make something they will keep forever?

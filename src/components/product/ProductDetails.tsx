@@ -1,5 +1,7 @@
 import { PRODUCTS, type Product } from '@/data/catalog'
 import ProductCard from './ProductCard'
+import ReviewsSection from '@/components/trust/ReviewsSection'
+import FaqAccordion from '@/components/trust/FaqAccordion'
 
 function relatedProducts(product: Product): Product[] {
   return PRODUCTS.filter((p) => p.slug !== product.slug && p.categories.some((c) => product.categories.includes(c))).slice(
@@ -62,6 +64,14 @@ export default function ProductDetails({ product }: { product: Product }) {
           </div>
         </div>
       )}
+
+      <div className="mt-16 border-t border-mist pt-14">
+        <ReviewsSection />
+      </div>
+
+      <div className="mt-14">
+        <FaqAccordion />
+      </div>
     </div>
   )
 }

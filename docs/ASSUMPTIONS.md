@@ -136,6 +136,31 @@ changes (mostly `src/data/catalog.ts`, `src/lib/shipping.ts`, or
   prioritize these 8 for the client's next photo shoot.
 - **Reviews**: placeholder reviews use initials-style names ("Sarah M.") per
   the brief, clearly marked `// TODO: replace with real reviews` in code.
+- **About page family photo**: no photo of the family exists anywhere in the
+  reference material, so `/about` uses a plain styled placeholder (not even
+  a stylized magnet graphic, since a person's photo shouldn't be faked with
+  a product placeholder). Added to `docs/PHOTO-SHOT-LIST.md`.
+
+## Phase 4 additions
+
+- **Privacy and Terms text**: no source material exists for either, since
+  the live Wix site's own versions weren't captured in the reference file
+  and a small business like this typically doesn't have bespoke legal text
+  drafted yet. The copy on `/policies` is reasonable, generic placeholder
+  language for a mockup, not reviewed legal text — flagged again in
+  `docs/GOING-LIVE.md` as something that needs an actual legal review before
+  this site collects real customer data.
+- **Bulk pricing table**: `/bulk` shows the 50/100/200 tiers for Logo/QR and
+  Save the Date Magnets, since those are the only bulk-priced products with
+  confirmed numbers. Other bulk-eligible products (e.g. Sport Fan Magnets in
+  volume) are marked "quoted per request" rather than inventing tier prices
+  with no source.
+- **Event booking reference / calendar availability**: unchanged from the
+  Phase 1 assumption — the "unavailable" dates are fixed *offsets* from
+  today (not fixed calendar dates), so the mock calendar always shows a
+  plausible pattern of already-booked days no matter when the site is
+  viewed, without ever using `Math.random` (which would make the calendar
+  look different on every reload).
 
 ## Out of scope for this mockup (documented, not built)
 

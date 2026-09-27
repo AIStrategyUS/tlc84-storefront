@@ -1,7 +1,9 @@
 import { useLocation, useParams } from 'react-router-dom'
-import { getProduct, type Product } from '@/data/catalog'
+import { getProduct, startingPrice, type Product } from '@/data/catalog'
 import type { CartItem } from '@/context/CartContext'
 import { useSeo } from '@/lib/useSeo'
+import { useJsonLd } from '@/lib/useJsonLd'
+import { asset } from '@/lib/assets'
 import NotFound from './NotFound'
 import PhotoPackView from '@/components/product/views/PhotoPackView'
 import PhotoBulkView from '@/components/product/views/PhotoBulkView'
@@ -35,6 +37,19 @@ export default function ProductPage() {
 
 function ProductPageContent({ product, editItem }: { product: Product; editItem?: CartItem }) {
   useSeo(product.name, product.hook)
+  useJsonLd({
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    name: product.name,
+    description: product.hook,
+    image: `${window.location.origin}${asset(product.images[0] ?? 'images/logo.png')}`,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: startingPrice(product).toFixed(2),
+      availability: 'https://schema.org/InStock',
+    },
+  })
 
   switch (product.kind) {
     case 'photo-pack':

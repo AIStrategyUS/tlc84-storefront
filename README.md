@@ -7,9 +7,11 @@ uploads, and event booking are all simulated client-side so the whole site
 can be reviewed as a static link before any real infrastructure is built.
 
 See [`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md) for every place a judgment
-call was made instead of a confirmed answer from the client, and
-[`docs/GOING-LIVE.md`](docs/GOING-LIVE.md) (added in Phase 4) for what it
-takes to turn this into a real, transacting store.
+call was made instead of a confirmed answer from the client,
+[`docs/PHOTO-SHOT-LIST.md`](docs/PHOTO-SHOT-LIST.md) for what the client
+should shoot to replace the remaining placeholder products, and
+[`docs/GOING-LIVE.md`](docs/GOING-LIVE.md) for what it takes to turn this
+into a real, transacting store.
 
 ## Status
 
@@ -18,7 +20,7 @@ Being built in phases, each reviewed before the next starts:
 - [x] **Phase 1** — scaffold, brand theme, header/footer, homepage, GitHub Pages deploy
 - [x] **Phase 2** — catalog data, shop pages, product pages, the photo customizer
 - [x] **Phase 3** — cart drawer, cart page, checkout, order confirmation
-- [ ] **Phase 4** — events booking, bulk orders, about, contact, policies, trust layer, SEO polish
+- [x] **Phase 4** — events booking, bulk orders, about, contact, policies, trust layer, SEO polish
 
 ## Stack
 
