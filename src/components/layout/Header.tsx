@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Menu, ShoppingBag, X } from 'lucide-react'
+import { useCart } from '@/context/CartContext'
 
 const NAV_LINKS = [
   { to: '/shop', label: 'Shop' },
@@ -11,10 +12,7 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-
-  // Cart line items and totals are introduced in Phase 3 (cart + checkout).
-  // The badge is wired to the real count then; it stays hidden at zero.
-  const itemCount = 0
+  const { itemCount } = useCart()
 
   return (
     <header className="sticky top-0 z-40 border-b border-mist bg-cream/95 backdrop-blur">

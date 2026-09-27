@@ -16,7 +16,7 @@ takes to turn this into a real, transacting store.
 Being built in phases, each reviewed before the next starts:
 
 - [x] **Phase 1** — scaffold, brand theme, header/footer, homepage, GitHub Pages deploy
-- [ ] **Phase 2** — catalog data, shop pages, product pages, the photo customizer
+- [x] **Phase 2** — catalog data, shop pages, product pages, the photo customizer
 - [ ] **Phase 3** — cart drawer, cart page, checkout, order confirmation
 - [ ] **Phase 4** — events booking, bulk orders, about, contact, policies, trust layer, SEO polish
 

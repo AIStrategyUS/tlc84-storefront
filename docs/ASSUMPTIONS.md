@@ -101,11 +101,17 @@ changes (mostly `src/data/catalog.ts`, `src/lib/shipping.ts`, or
   `docs/source-assets/logo-original.png` for reference. If the client has a
   vector source file (.ai/.eps/.svg) from their original designer, swapping
   it in later is a one-file change.
-- **Product photography**: per the brief, the client's existing Wix photos
-  are downloaded as placeholders where referenced, and a stylized SVG magnet
-  (brand-colored circle + design name in the display font) is used for
-  every product with no photo. `docs/PHOTO-SHOT-LIST.md` (Phase 4) lists what
-  the client should shoot to replace all placeholders.
+- **Product photography**: of the 7 images referenced in the reference file,
+  5 are used as real placeholders (3" and 2.25" Custom Photo Magnets, 3" and
+  2.25" Save the Date Magnets, Logo/QR Magnets). Two were downloaded but not
+  used: the keychains photo actually shows text/quote keychains, not photo
+  keychains (would misrepresent the product), and the baby blanket photo is
+  a Wix marketing graphic with a "Baby Blankets" title and torn-paper border
+  baked into the image itself, which would visually clash with this site's
+  design. Both of those products use the stylized SVG placeholder instead.
+  All originals are kept at `docs/source-assets/` in case the client wants
+  them cropped or reused differently. `docs/PHOTO-SHOT-LIST.md` (Phase 4)
+  lists what the client should shoot to replace every placeholder.
 - **Reviews**: placeholder reviews use initials-style names ("Sarah M.") per
   the brief, clearly marked `// TODO: replace with real reviews` in code.
 
