@@ -12,7 +12,7 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { itemCount } = useCart()
+  const { itemCount, openDrawer } = useCart()
 
   return (
     <header className="sticky top-0 z-40 border-b border-mist bg-cream/95 backdrop-blur">
@@ -47,8 +47,9 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-1">
-          <Link
-            to="/cart"
+          <button
+            type="button"
+            onClick={openDrawer}
             aria-label={`Cart${itemCount > 0 ? `, ${itemCount} items` : ''}`}
             className="relative flex h-11 w-11 items-center justify-center rounded-full text-forest hover:bg-sage/60"
           >
@@ -58,7 +59,7 @@ export default function Header() {
                 {itemCount}
               </span>
             )}
-          </Link>
+          </button>
 
           <button
             type="button"

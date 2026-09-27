@@ -1,25 +1,31 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { FixedProduct } from '@/data/catalog'
 import { categoryLabel } from '@/data/categories'
 import ProductLayout from '../ProductLayout'
 import OptionSelect from '../OptionSelect'
 import QuantityStepper from '../QuantityStepper'
-import AddedToCartNotice from '../AddedToCartNotice'
 import ProductPlaceholder from '../ProductPlaceholder'
 import { Button } from '@/components/ui/Button'
 import { formatPrice } from '@/lib/pricing'
-import { useCart } from '@/context/CartContext'
+import { restoreOptionValues } from '@/lib/editRestore'
+import { useCart, type CartItem } from '@/context/CartContext'
 
-export default function FixedView({ product }: { product: FixedProduct }) {
-  const { addItem } = useCart()
-  const [optionValues, setOptionValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries((product.optionGroups ?? []).map((g) => [g.id, g.choices[0]?.value ?? ''])),
+export default function FixedView({ product, editItem }: { product: FixedProduct; editItem?: CartItem }) {
+  const { addItem, updateItem, openDrawer } = useCart()
+  const navigate = useNavigate()
+  const [optionValues, setOptionValues] = useState<Record<string, string>>(() => {
+    const defaults = Object.fromEntries((product.optionGroups ?? []).map((g) => [g.id, g.choices[0]?.value ?? '']))
+    return editItem
+      ? { ...defaults, ...restoreOptionValues(product.optionGroups ?? [], editItem.optionsSummary) }
+      : defaults
+  })
+  const [nameAddonEnabled, setNameAddonEnabled] = useState(
+    () => Boolean(product.nameAddon) && Boolean(editItem?.optionsSummary.some((s) => s.startsWith(product.nameAddon!.label))),
   )
-  const [nameAddonEnabled, setNameAddonEnabled] = useState(false)
-  const [customName, setCustomName] = useState('')
-  const [quantity, setQuantity] = useState(1)
+  const [customName, setCustomName] = useState(editItem?.textValues?.name ?? '')
+  const [quantity, setQuantity] = useState(editItem?.quantity ?? 1)
   const [adding, setAdding] = useState(false)
-  const [added, setAdded] = useState(false)
 
   const unitPrice = product.price + (nameAddonEnabled && product.nameAddon ? product.nameAddon.price : 0)
 
@@ -33,17 +39,23 @@ export default function FixedView({ product }: { product: FixedProduct }) {
       optionsSummary.push(`${product.nameAddon.label}${customName ? `: ${customName}` : ''}`)
     }
 
-    addItem({
+    const item = {
       slug: product.slug,
       name: product.name,
       packLabel: 'Single',
       quantity,
       unitPrice,
       optionsSummary,
-      giftWrap: false,
+      giftWrap: editItem?.giftWrap ?? false,
       textValues: nameAddonEnabled && customName ? { name: customName } : undefined,
-    })
-    setAdded(true)
+    }
+    if (editItem) {
+      updateItem(editItem.id, item)
+      navigate('/cart')
+    } else {
+      addItem(item)
+      openDrawer()
+    }
     setAdding(false)
   }
 
@@ -104,10 +116,8 @@ export default function FixedView({ product }: { product: FixedProduct }) {
       </div>
 
       <Button onClick={handleAddToCart} disabled={adding} className="w-full sm:w-auto">
-        {adding ? 'Adding...' : 'Add to cart'}
+        {adding ? 'Saving...' : editItem ? 'Save changes' : 'Add to cart'}
       </Button>
-
-      <AddedToCartNotice show={added} />
     </div>
   )
 

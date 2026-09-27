@@ -1,27 +1,34 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { DesignPackProduct, Size } from '@/data/catalog'
 import { categoryLabel } from '@/data/categories'
 import ProductLayout from '../ProductLayout'
 import SizeSelector from '../SizeSelector'
 import PackTiles from '../PackTiles'
 import OptionSelect from '../OptionSelect'
-import AddedToCartNotice from '../AddedToCartNotice'
 import ProductPlaceholder from '../ProductPlaceholder'
 import { Button } from '@/components/ui/Button'
 import { formatPrice, savingsPercent } from '@/lib/pricing'
-import { useCart } from '@/context/CartContext'
+import { parseQuantityFromLabel, restoreOptionValues } from '@/lib/editRestore'
+import { useCart, type CartItem } from '@/context/CartContext'
 
-export default function DesignPackView({ product }: { product: DesignPackProduct }) {
-  const { addItem } = useCart()
-  const [magnetOrPin, setMagnetOrPin] = useState<'magnet' | 'pin'>('magnet')
-  const [size, setSize] = useState<Size>(product.sizes[0])
-  const [optionValues, setOptionValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries(product.optionGroups.map((g) => [g.id, g.choices[0]?.value ?? ''])),
-  )
+function initialMagnetOrPin(editItem?: CartItem): 'magnet' | 'pin' {
+  const line = editItem?.optionsSummary.find((s) => s.startsWith('Format: '))
+  return line?.endsWith('Pin') ? 'pin' : 'magnet'
+}
+
+export default function DesignPackView({ product, editItem }: { product: DesignPackProduct; editItem?: CartItem }) {
+  const { addItem, updateItem, openDrawer } = useCart()
+  const navigate = useNavigate()
+  const [magnetOrPin, setMagnetOrPin] = useState<'magnet' | 'pin'>(() => initialMagnetOrPin(editItem))
+  const [size, setSize] = useState<Size>(editItem?.size ?? product.sizes[0])
+  const [optionValues, setOptionValues] = useState<Record<string, string>>(() => {
+    const defaults = Object.fromEntries(product.optionGroups.map((g) => [g.id, g.choices[0]?.value ?? '']))
+    return editItem ? { ...defaults, ...restoreOptionValues(product.optionGroups, editItem.optionsSummary) } : defaults
+  })
   const tiers = product.packTiers[size] ?? []
-  const [quantity, setQuantity] = useState(tiers[0]?.quantity ?? 1)
+  const [quantity, setQuantity] = useState(editItem ? parseQuantityFromLabel(editItem.packLabel) : (tiers[0]?.quantity ?? 1))
   const [adding, setAdding] = useState(false)
-  const [added, setAdded] = useState(false)
 
   const sizes = product.magnetPinToggle && magnetOrPin === 'pin' ? product.sizes.filter((s) => s === '3"') : product.sizes
   const singleUnitPrice = product.packTiers[size]?.find((t) => t.quantity === 1)?.price
@@ -32,7 +39,6 @@ export default function DesignPackView({ product }: { product: DesignPackProduct
   function handleMagnetPinChange(next: 'magnet' | 'pin') {
     setMagnetOrPin(next)
     if (next === 'pin' && size !== '3"') setSize('3"')
-    setAdded(false)
   }
 
   function handleAddToCart() {
@@ -44,7 +50,7 @@ export default function DesignPackView({ product }: { product: DesignPackProduct
     })
     if (product.magnetPinToggle) optionsSummary.push(`Format: ${magnetOrPin === 'pin' ? 'Pin' : 'Magnet'}`)
 
-    addItem({
+    const item = {
       slug: product.slug,
       name: product.name,
       size,
@@ -52,9 +58,15 @@ export default function DesignPackView({ product }: { product: DesignPackProduct
       quantity: 1,
       unitPrice: selectedTier.price,
       optionsSummary,
-      giftWrap: false,
-    })
-    setAdded(true)
+      giftWrap: editItem?.giftWrap ?? false,
+    }
+    if (editItem) {
+      updateItem(editItem.id, item)
+      navigate('/cart')
+    } else {
+      addItem(item)
+      openDrawer()
+    }
     setAdding(false)
   }
 
@@ -136,10 +148,8 @@ export default function DesignPackView({ product }: { product: DesignPackProduct
       </div>
 
       <Button onClick={handleAddToCart} disabled={adding} className="w-full sm:w-auto">
-        {adding ? 'Adding...' : 'Add to cart'}
+        {adding ? 'Saving...' : editItem ? 'Save changes' : 'Add to cart'}
       </Button>
-
-      <AddedToCartNotice show={added} />
     </div>
   )
 

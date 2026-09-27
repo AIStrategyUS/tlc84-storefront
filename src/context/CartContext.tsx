@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Size } from '@/data/catalog'
 import { GIFT_WRAP_PRICE } from '@/lib/pricing'
@@ -40,6 +40,7 @@ interface CartState {
 
 type CartAction =
   | { type: 'ADD_ITEM'; item: CartItem }
+  | { type: 'UPDATE_ITEM'; id: string; item: CartItem }
   | { type: 'REMOVE_ITEM'; id: string }
   | { type: 'SET_QUANTITY'; id: string; quantity: number }
   | { type: 'SET_GIFT_WRAP'; id: string; giftWrap: boolean }
@@ -61,6 +62,8 @@ function reducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM':
       return { items: [...state.items, action.item] }
+    case 'UPDATE_ITEM':
+      return { items: state.items.map((i) => (i.id === action.id ? { ...action.item, id: action.id } : i)) }
     case 'REMOVE_ITEM':
       return { items: state.items.filter((i) => i.id !== action.id) }
     case 'SET_QUANTITY':
@@ -83,10 +86,14 @@ interface CartContextValue {
   itemCount: number
   subtotal: number
   addItem: (item: Omit<CartItem, 'id'>) => void
+  updateItem: (id: string, item: Omit<CartItem, 'id'>) => void
   removeItem: (id: string) => void
   setQuantity: (id: string, quantity: number) => void
   setGiftWrap: (id: string, giftWrap: boolean) => void
   clearCart: () => void
+  isDrawerOpen: boolean
+  openDrawer: () => void
+  closeDrawer: () => void
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
@@ -98,6 +105,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // the empty initial state and clobber localStorage before the hydrated
   // data ever got dispatched.
   const [state, dispatch] = useReducer(reducer, undefined, loadInitialState)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   useEffect(() => {
     try {
@@ -118,12 +126,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       itemCount,
       subtotal,
       addItem: (item) => dispatch({ type: 'ADD_ITEM', item: { ...item, id: crypto.randomUUID() } }),
+      updateItem: (id, item) => dispatch({ type: 'UPDATE_ITEM', id, item: { ...item, id } }),
       removeItem: (id) => dispatch({ type: 'REMOVE_ITEM', id }),
       setQuantity: (id, quantity) => dispatch({ type: 'SET_QUANTITY', id, quantity }),
       setGiftWrap: (id, giftWrap) => dispatch({ type: 'SET_GIFT_WRAP', id, giftWrap }),
       clearCart: () => dispatch({ type: 'CLEAR_CART' }),
+      isDrawerOpen,
+      openDrawer: () => setIsDrawerOpen(true),
+      closeDrawer: () => setIsDrawerOpen(false),
     }
-  }, [state.items])
+  }, [state.items, isDrawerOpen])
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

@@ -1,4 +1,10 @@
 export const GIFT_WRAP_PRICE = 2
+export const FREE_SHIPPING_THRESHOLD = 35
+export const FLAT_SHIPPING_RATE = 5.95
+
+export function computeShipping(subtotal: number): number {
+  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_RATE
+}
 
 export function formatPrice(amount: number): string {
   return `$${amount.toFixed(2).replace(/\.00$/, '')}`

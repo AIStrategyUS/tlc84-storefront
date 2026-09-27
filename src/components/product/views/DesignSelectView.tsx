@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { DesignSelectProduct, Size } from '@/data/catalog'
 import { categoryLabel } from '@/data/categories'
 import ProductLayout from '../ProductLayout'
@@ -6,23 +7,24 @@ import SizeSelector from '../SizeSelector'
 import PackTiles from '../PackTiles'
 import OptionSelect from '../OptionSelect'
 import QuantityStepper from '../QuantityStepper'
-import AddedToCartNotice from '../AddedToCartNotice'
 import ProductPlaceholder from '../ProductPlaceholder'
 import { Button } from '@/components/ui/Button'
 import { formatPrice } from '@/lib/pricing'
-import { useCart } from '@/context/CartContext'
+import { parseQuantityFromLabel, restoreOptionValues } from '@/lib/editRestore'
+import { useCart, type CartItem } from '@/context/CartContext'
 
-export default function DesignSelectView({ product }: { product: DesignSelectProduct }) {
-  const { addItem } = useCart()
-  const [size, setSize] = useState<Size>(product.sizes[0])
-  const [optionValues, setOptionValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries(product.optionGroups.map((g) => [g.id, g.choices[0]?.value ?? ''])),
-  )
+export default function DesignSelectView({ product, editItem }: { product: DesignSelectProduct; editItem?: CartItem }) {
+  const { addItem, updateItem, openDrawer } = useCart()
+  const navigate = useNavigate()
+  const [size, setSize] = useState<Size>(editItem?.size ?? product.sizes[0])
+  const [optionValues, setOptionValues] = useState<Record<string, string>>(() => {
+    const defaults = Object.fromEntries(product.optionGroups.map((g) => [g.id, g.choices[0]?.value ?? '']))
+    return editItem ? { ...defaults, ...restoreOptionValues(product.optionGroups, editItem.optionsSummary) } : defaults
+  })
   const unitPrice = product.unitPrice[size] ?? 0
-  const [bundleQuantity, setBundleQuantity] = useState(1)
-  const [simpleQuantity, setSimpleQuantity] = useState(1)
+  const [bundleQuantity, setBundleQuantity] = useState(editItem ? parseQuantityFromLabel(editItem.packLabel) : 1)
+  const [simpleQuantity, setSimpleQuantity] = useState(editItem?.quantity ?? 1)
   const [adding, setAdding] = useState(false)
-  const [added, setAdded] = useState(false)
 
   const tiers = product.bundle ? [{ quantity: 1, price: unitPrice }, { quantity: product.bundle.quantity, price: product.bundle.price }] : []
   const selectedTier = tiers.find((t) => t.quantity === bundleQuantity) ?? tiers[0]
@@ -34,30 +36,36 @@ export default function DesignSelectView({ product }: { product: DesignSelectPro
       return `${g.label}: ${choice?.label ?? ''}`
     })
 
-    if (product.bundle && selectedTier) {
-      addItem({
-        slug: product.slug,
-        name: product.name,
-        size,
-        packLabel: selectedTier.quantity === 1 ? 'Single' : product.bundle.label,
-        quantity: 1,
-        unitPrice: selectedTier.price,
-        optionsSummary,
-        giftWrap: false,
-      })
+    const item =
+      product.bundle && selectedTier
+        ? {
+            slug: product.slug,
+            name: product.name,
+            size,
+            packLabel: selectedTier.quantity === 1 ? 'Single' : product.bundle.label,
+            quantity: 1,
+            unitPrice: selectedTier.price,
+            optionsSummary,
+            giftWrap: editItem?.giftWrap ?? false,
+          }
+        : {
+            slug: product.slug,
+            name: product.name,
+            size,
+            packLabel: 'Single',
+            quantity: simpleQuantity,
+            unitPrice,
+            optionsSummary,
+            giftWrap: editItem?.giftWrap ?? false,
+          }
+
+    if (editItem) {
+      updateItem(editItem.id, item)
+      navigate('/cart')
     } else {
-      addItem({
-        slug: product.slug,
-        name: product.name,
-        size,
-        packLabel: 'Single',
-        quantity: simpleQuantity,
-        unitPrice,
-        optionsSummary,
-        giftWrap: false,
-      })
+      addItem(item)
+      openDrawer()
     }
-    setAdded(true)
     setAdding(false)
   }
 
@@ -113,10 +121,8 @@ export default function DesignSelectView({ product }: { product: DesignSelectPro
       </div>
 
       <Button onClick={handleAddToCart} disabled={adding} className="w-full sm:w-auto">
-        {adding ? 'Adding...' : 'Add to cart'}
+        {adding ? 'Saving...' : editItem ? 'Save changes' : 'Add to cart'}
       </Button>
-
-      <AddedToCartNotice show={added} />
     </div>
   )
 

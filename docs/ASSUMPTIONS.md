@@ -82,12 +82,23 @@ changes (mostly `src/data/catalog.ts`, `src/lib/shipping.ts`, or
 ## Checkout
 
 - **Order numbers**: mock strings like `TLC-100482`, generated client-side.
+  Order records (line items, address, totals) are saved to `localStorage`
+  keyed by order number, so the confirmation page survives a refresh
+  instead of only working via one-time router state.
 - **Card fields**: format-only validation (digit grouping, expiry not in the
   past, 3-4 digit CVC). No Luhn check, no real gateway, no data is persisted
   beyond the current session's `localStorage` order record. This is stated
   on-screen per the brief.
+- **Shipping method**: the brief lists "shipping method" as one of checkout's
+  four sections, but only ever specifies one flat-rate/free-over-$35 policy,
+  no second (e.g. expedited) tier with its own price. Checkout shows that one
+  method as a pre-selected, non-interactive option displaying the computed
+  price, rather than inventing an unpriced second choice.
 - **Tax**: not modeled. A real integration would need a tax service; noted in
   `docs/GOING-LIVE.md`.
+- **Gift wrap**: the $2 add-on is applied per line item (once per cart row,
+  not multiplied by that row's quantity), matching "available on any item in
+  the cart" read as a per-item toggle rather than a per-unit charge.
 
 ## Content / assets
 

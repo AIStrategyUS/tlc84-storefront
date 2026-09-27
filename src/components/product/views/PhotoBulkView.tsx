@@ -1,33 +1,57 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import QRCode from 'qrcode'
 import type { PhotoBulkProduct, Size } from '@/data/catalog'
 import { categoryLabel } from '@/data/categories'
 import ProductLayout from '../ProductLayout'
 import SizeSelector from '../SizeSelector'
 import PackTiles from '../PackTiles'
-import AddedToCartNotice from '../AddedToCartNotice'
 import { Button } from '@/components/ui/Button'
 import PhotoSlot from '@/components/customizer/PhotoSlot'
 import QrPreview from '@/components/customizer/QrPreview'
 import TextOverlay from '@/components/customizer/TextOverlay'
-import { EMPTY_SLOT, fullImageCrop, type SlotState } from '@/components/customizer/types'
+import {
+  EMPTY_SLOT,
+  fullImageCrop,
+  slotStateFromCartSlot,
+  measureSlotImage,
+  type SlotState,
+} from '@/components/customizer/types'
 import { renderCroppedThumbnail } from '@/lib/image'
 import { formatPrice } from '@/lib/pricing'
-import { useCart } from '@/context/CartContext'
+import { parseQuantityFromLabel } from '@/lib/editRestore'
+import { useCart, type CartItem } from '@/context/CartContext'
 
 type UploadMode = 'upload' | 'qr'
 
-export default function PhotoBulkView({ product }: { product: PhotoBulkProduct }) {
-  const { addItem } = useCart()
-  const [size, setSize] = useState<Size>(product.sizes[0])
+export default function PhotoBulkView({ product, editItem }: { product: PhotoBulkProduct; editItem?: CartItem }) {
+  const { addItem, updateItem, openDrawer } = useCart()
+  const navigate = useNavigate()
+  const [size, setSize] = useState<Size>(editItem?.size ?? product.sizes[0])
   const tiers = product.bulkTiers[size] ?? []
-  const [quantity, setQuantity] = useState(tiers[0]?.quantity ?? 50)
-  const [slot, setSlot] = useState<SlotState>(EMPTY_SLOT)
-  const [mode, setMode] = useState<UploadMode>('upload')
-  const [qrUrl, setQrUrl] = useState('')
-  const [textValues, setTextValues] = useState<Record<string, string>>({})
+  const [quantity, setQuantity] = useState(
+    editItem ? parseQuantityFromLabel(editItem.packLabel) : (tiers[0]?.quantity ?? 50),
+  )
+  const [slot, setSlot] = useState<SlotState>(() =>
+    editItem?.slots?.[0] ? slotStateFromCartSlot(editItem.slots[0]) : EMPTY_SLOT,
+  )
+  const [mode, setMode] = useState<UploadMode>(editItem?.textValues?.url ? 'qr' : 'upload')
+  const [qrUrl, setQrUrl] = useState(editItem?.textValues?.url ?? '')
+  const [textValues, setTextValues] = useState<Record<string, string>>(editItem?.textValues ?? {})
   const [adding, setAdding] = useState(false)
-  const [added, setAdded] = useState(false)
+
+  useEffect(() => {
+    if (!editItem?.slots?.[0]) return
+    let cancelled = false
+    measureSlotImage(slot).then((measured) => {
+      if (!cancelled) setSlot(measured)
+    })
+    return () => {
+      cancelled = true
+    }
+    // Only run once, for the initial edit-seeded slot.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const selectedTier = tiers.find((t) => t.quantity === quantity) ?? tiers[0]
   const isQrMode = Boolean(product.logoOrQr) && mode === 'qr'
@@ -35,7 +59,6 @@ export default function PhotoBulkView({ product }: { product: PhotoBulkProduct }
 
   function handleSizeChange(nextSize: Size) {
     setSize(nextSize)
-    setAdded(false)
   }
 
   async function handleAddToCart() {
@@ -60,7 +83,7 @@ export default function PhotoBulkView({ product }: { product: PhotoBulkProduct }
         ]
       }
 
-      addItem({
+      const item = {
         slug: product.slug,
         name: product.name,
         size,
@@ -69,11 +92,17 @@ export default function PhotoBulkView({ product }: { product: PhotoBulkProduct }
         unitPrice: selectedTier.price,
         optionsSummary: isQrMode ? [`QR link: ${qrUrl}`] : [],
         thumbnail,
-        giftWrap: false,
+        giftWrap: editItem?.giftWrap ?? false,
         slots: slotsData,
         textValues: { ...textValues, ...(isQrMode ? { url: qrUrl } : {}) },
-      })
-      setAdded(true)
+      }
+      if (editItem) {
+        updateItem(editItem.id, item)
+        navigate('/cart')
+      } else {
+        addItem(item)
+        openDrawer()
+      }
     } finally {
       setAdding(false)
     }
@@ -167,10 +196,8 @@ export default function PhotoBulkView({ product }: { product: PhotoBulkProduct }
       )}
 
       <Button onClick={handleAddToCart} disabled={!canAdd || adding} className="w-full sm:w-auto">
-        {adding ? 'Adding...' : 'Add to cart'}
+        {adding ? 'Saving...' : editItem ? 'Save changes' : 'Add to cart'}
       </Button>
-
-      <AddedToCartNotice show={added} />
     </div>
   )
 

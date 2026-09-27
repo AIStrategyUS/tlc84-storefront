@@ -1,4 +1,5 @@
-import type { PixelCrop } from '@/lib/image'
+import type { CartItemSlot } from '@/context/CartContext'
+import { loadImage, type PixelCrop } from '@/lib/image'
 
 export interface SlotState {
   workingImageUrl: string | null
@@ -29,4 +30,32 @@ export function resizeSlots(slots: SlotState[], length: number): SlotState[] {
 /** Fallback crop rect covering the whole image, for a slot that was never interactively cropped. */
 export function fullImageCrop(slot: SlotState): PixelCrop {
   return { x: 0, y: 0, width: slot.naturalWidth || 1, height: slot.naturalHeight || 1 }
+}
+
+/**
+ * Rebuilds an editable SlotState from a saved cart-item slot, when a
+ * shopper reopens the customizer via "Edit." The stored image is already
+ * the downscaled working copy, and since that downscale never upscales, a
+ * photo that was originally smaller than the working-copy cap keeps its
+ * true original dimensions here too, so the low-resolution check stays
+ * accurate. Width/height start at a large placeholder and are corrected
+ * once the image actually loads, so the warning can't false-positive
+ * during that brief window.
+ */
+export function slotStateFromCartSlot(slot: CartItemSlot): SlotState {
+  return {
+    workingImageUrl: slot.imageDataUrl,
+    naturalWidth: 9999,
+    naturalHeight: 9999,
+    crop: slot.crop,
+    zoom: slot.zoom,
+    rotation: slot.rotation,
+    croppedAreaPixels: slot.croppedAreaPixels,
+  }
+}
+
+export async function measureSlotImage(slot: SlotState): Promise<SlotState> {
+  if (!slot.workingImageUrl) return slot
+  const img = await loadImage(slot.workingImageUrl)
+  return { ...slot, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight }
 }
